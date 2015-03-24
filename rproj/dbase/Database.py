@@ -129,7 +129,7 @@ class TableAttribute(Logged):
                 ' {}'.format(self.typ.upper()),
                 (' NOT NULL' if not self.null else ''),
                 (' UNIQUE' if self.unique else ''),
-                (' DEFAULT {} '.format(str(self.default)) if self.default else ''),
+                (' DEFAULT {}'.format(str(self.default)) if self.default else ''),
                 (' PRIMARY KEY' if self.pk else '')
             ])
         return '\t{}'.format(retn)
