@@ -21,35 +21,52 @@ import os
 import inspect
 import logging
 import logging.handlers
+from globals import *
 
 
 class Logged(object):
+    """ Logged superclass, allows an object to create and use a logging.Logger.
+
+    """
 
     def __init__(self):
+        """ Initialization placeholder, does nothing.
+
+        """
         pass
         
     @property
     def log(self, *args, **kwargs):
+        """ Object log property, creates log for object logging.
+
+            :param *args: List of passed arguments
+            :type *args: ``list``
+            :param **kwargs: Dictionary of passed arguments
+            :type **kwargs: ``dict``
+            :returns: Logger instance for the calling object
+            :rtype: ``logging.Logger``
+
+        """
         logger = logging.getLogger(self.__class__.__name__)
         if not logger.handlers:
-            # if logpath:
-            #     if not os.path.exists(os.path.dirname(logpath)):
-            #         os.makedirs(os.path.dirname(logpath), 0775)
-            #     logfile = logging.handlers.RotatingFileHandler(
-            #         logpath,
-            #         maxBytes=(1024 * 1024),
-            #         backupCount=1
-            #     )
-            #     logfile.setFormatter(
-            #         logging.Formatter(
-            #             (
-            #                 '%(asctime)s;%(levelname)s;%(pathname)s;%(name)s;'
-            #                 '%(funcname)s;%(lineno)s;%(message)s'
-            #             ),
-            #             datefmt='%y-%m-%d %H:%M:%S'
-            #         )
-            #     )
-            #     logger.addHandler(logfile)
+            if LOGTOFILE:
+                if not os.path.exists(os.path.dirname(LOGTOPATH)):
+                    os.makedirs(os.path.dirname(LOGTOPATH), 0775)
+                logfile = logging.handlers.RotatingFileHandler(
+                    LOGTOPATH,
+                    maxBytes=(1024 * 1024),
+                    backupCount=1
+                )
+                logfile.setFormatter(
+                    logging.Formatter(
+                        (
+                            '%(asctime)s;%(levelname)s;%(pathname)s;%(name)s;'
+                            '%(funcName)s;%(lineno)s;%(message)s'
+                        ),
+                        datefmt='%y-%m-%d %H:%M:%S'
+                    )
+                )
+                logger.addHandler(logfile)
             console = logging.StreamHandler()
             console.setFormatter(
                 logging.Formatter(

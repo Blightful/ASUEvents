@@ -21,19 +21,28 @@ import Database
 from Building import Building
 
 
-class Room(Database.ITable):
+class Room(Database.ITable, Database.TableRepresentation):
+    """ ROOM table, defines a table of rooms.
+
+    """
 
     def __init__(self, dbcon):
-        super(Room, self).__init__(dbcon)
+        """ Initialize ROOM table.
 
-    def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            ', '.join([i.name for i in self.t_deffinition])
-        )
+            :param dbcon: sqlite database connection
+            :type dbcon: ``sqlite.Connection``
+
+        """
+        super(Room, self).__init__(dbcon)
 
     @property
     def t_deffinition(self):
+        """ Define the ROOM table's attributes.
+            
+            :returns: List of table attributes
+            :rtype: ``list``
+
+        """
         return [
             Database.TableAttribute('roomID', 'text', unique=True, pk=True),
             Database.TableAttribute('name', 'text'),
@@ -42,5 +51,4 @@ class Room(Database.ITable):
             Database.TableAttribute('permissions', 'integer', default='0777'),
             Database.TableAttribute('buildingID', 'integer', fk=Building)
         ]
-
 

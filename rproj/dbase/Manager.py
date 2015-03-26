@@ -20,19 +20,28 @@ from __future__ import unicode_literals
 import Database
 
 
-class Manager(Database.ITable):
+class Manager(Database.ITable, Database.TableRepresentation):
+    """ MANAGER table, defines a table of rooms.
+
+    """
 
     def __init__(self, dbcon):
-        super(Manager, self).__init__(dbcon)
+        """ Initialize MANAGER table.
 
-    def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            ', '.join([i.name for i in self.t_deffinition])
-        )
+            :param dbcon: sqlite database connection
+            :type dbcon: ``sqlite.Connection``
+
+        """
+        super(Manager, self).__init__(dbcon)
 
     @property
     def t_deffinition(self):
+        """ Define the MANAGER table's attributes.
+            
+            :returns: List of table attributes
+            :rtype: ``list``
+
+        """
         return [
             Database.TableAttribute('managerID', 'integer', unique=True, pk=True),
             Database.TableAttribute('namefirst', 'text'),

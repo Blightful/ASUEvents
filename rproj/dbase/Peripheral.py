@@ -21,19 +21,28 @@ import Database
 from Room import Room
 
 
-class Peripheral(Database.ITable):
+class Peripheral(Database.ITable, Database.TableRepresentation):
+    """ PERIPHERAL table, defines a table of rooms.
+
+    """
 
     def __init__(self, dbcon):
-        super(Peripheral, self).__init__(dbcon)
+        """ Initialize PERIPHERAL table.
 
-    def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            ', '.join([i.name for i in self.t_deffinition])
-        )
+            :param dbcon: sqlite database connection
+            :type dbcon: ``sqlite.Connection``
+
+        """
+        super(Peripheral, self).__init__(dbcon)
 
     @property
     def t_deffinition(self):
+        """ Define the PERIPHERAL table's attributes.
+            
+            :returns: List of table attributes
+            :rtype: ``list``
+
+        """
         return [
             Database.TableAttribute('peripheralID', 'text', unique=True, pk=True),
             Database.TableAttribute('name', 'text'),

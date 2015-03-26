@@ -20,19 +20,28 @@ from __future__ import unicode_literals
 import Database
 
 
-class Building(Database.ITable):
+class Building(Database.ITable, Database.TableRepresentation):
+    """ BUILDING table, defines a table of rooms.
+
+    """
 
     def __init__(self, dbcon):
-        super(Building, self).__init__(dbcon)
+        """ Initialize BUILDING table.
 
-    def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            ', '.join([i.name for i in self.t_deffinition])
-        )
+            :param dbcon: sqlite database connection
+            :type dbcon: ``sqlite.Connection``
+
+        """
+        super(Building, self).__init__(dbcon)
 
     @property
     def t_deffinition(self):
+        """ Define the BUILDING table's attributes.
+            
+            :returns: List of table attributes
+            :rtype: ``list``
+
+        """
         return [
             Database.TableAttribute('buildingID', 'integer', pk=True),
             Database.TableAttribute('name', 'text'),

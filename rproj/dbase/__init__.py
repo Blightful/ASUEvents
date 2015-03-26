@@ -17,8 +17,3 @@ __init__
 """
 
 from DB import DB
-# from Building import Building
-# from Peripheral import Peripheral
-# from Manager import Manager
-# from Event import Event
-# from Room import Room

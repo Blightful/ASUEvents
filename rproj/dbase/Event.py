@@ -22,19 +22,28 @@ from Room import Room
 from Manager import Manager
 
 
-class Event(Database.ITable):
+class Event(Database.ITable, Database.TableRepresentation):
+    """ EVENT table, defines a table of events.
+
+    """
 
     def __init__(self, dbcon):
-        super(Event, self).__init__(dbcon)
+        """ Initialize EVENT table.
 
-    def __repr__(self):
-        return '{}({})'.format(
-            self.__class__.__name__,
-            ', '.join([i.name for i in self.t_deffinition])
-        )
+            :param dbcon: sqlite database connection
+            :type dbcon: ``sqlite.Connection``
+
+        """
+        super(Event, self).__init__(dbcon)
 
     @property
     def t_deffinition(self):
+        """ Define the EVENT table's attributes.
+            
+            :returns: List of table attributes
+            :rtype: ``list``
+
+        """
         return [
             Database.TableAttribute('eventID', 'integer', pk=True),
             Database.TableAttribute('name', 'text'),
@@ -47,5 +56,6 @@ class Event(Database.ITable):
             Database.TableAttribute('weekly', 'integer'),
             Database.TableAttribute('daily', 'integer'),
             Database.TableAttribute('roomID', 'text', fk=Room),
-            Database.TableAttribute('managerID', 'integer', fk=Manager)
+            Database.TableAttribute('managerID', 'integer', fk=Manager),
         ]
+
