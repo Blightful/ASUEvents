@@ -32,6 +32,7 @@ except ImportError:
 
 
 class ITable(Logged, object):
+
     """ Table Interface, used to implement a table object.
 
     """
@@ -51,7 +52,7 @@ class ITable(Logged, object):
     @property
     def name(self):
         """ Table name property, uppercase class name.
-            
+
             :returns: $CLASS_NAME.upper()
             :rtype: ``str``
 
@@ -93,7 +94,7 @@ class ITable(Logged, object):
             if i and j:
                 if sorted(i.__dict__.keys()) == sorted(j.__dict__.keys()):
                     if not all([
-                        (getattr(i, k) == getattr(j, k)) for k in 
+                        (getattr(i, k) == getattr(j, k)) for k in
                         sorted(i.__dict__.keys())
                     ]):
                         retn['alter'].append(i)
@@ -125,6 +126,75 @@ class ITable(Logged, object):
                 return pickle.loads(defread)
         return self.save_deffinition()
 
+    def insert(self, values):
+        """ Insert a dictionary of values into the corresponding attribute keys.
+
+            :param values: Dictionary of values to be inserted.
+            :type values: ``dict``
+
+        """
+        valid = True
+        attrkeys = []
+        [
+            (
+                self.log.debug(
+                    'removing key `{}` from insert {}, unknown key ...'.format(
+                        i, values
+                    )
+                ),
+                values.pop(i, None),
+            )
+            for i in reversed(values.keys()) if i not in
+            [j.name for j in self.deffinition]
+        ]
+        if [i.name for i in self.deffinition if i.pk][0] in values.keys():
+            for i in [i.name for i in self.deffinition]:
+                if i in [j.name for j in self.deffinition if not j.null]:
+                    if i in values.keys():
+                        attrkeys.append(i)
+                    else:
+                        if i in [
+                            j.name for j in self.deffinition if j.default
+                        ]:
+                            val_default = [
+                                j.default for j in self.deffinition if
+                                j.name == i
+                            ][0]
+                            self.log.debug((
+                                'adding key `{}` to insert {}, '
+                                'default value `{}` ...'
+                            ).format(i, values, val_default))
+                            values[i] = val_default
+                            attrkeys.append(i)
+                        else:
+                            self.log.error((
+                                'cannot insert {} into table `{}`, '
+                                'missing required attribute `{}`'
+                            ).format(values, self.name, i))
+                            valid = False
+                if i in [j.name for j in self.deffinition if j.null]:
+                    if i not in values.keys():
+                        values[i] = 'NULL'
+                        attrkeys.append(i)
+        else:
+            self.log.error(
+                'cannot insert {} into table `{}`, missing primary key'.format(
+                    values, self.name
+                )
+            )
+            valid = False
+        if valid:
+            self.log.info(
+                'inserting {} into table `{}` ...'.format(values, self.name)
+            )
+            self.cursor.execute(
+                "INSERT INTO {} VALUES ({})".format(
+                    self.name, ', '.join((['?'] * len(attrkeys)))
+                ), tuple([str(values[i]) for i in attrkeys])
+            )
+            self.connection.commit()
+        return valid
+
     def drop(self):
         """ Drop the table without any safety protection.
 
@@ -142,15 +212,15 @@ class ITable(Logged, object):
         """
         fks = [i for i in self.deffinition if i.fk != None]
         return "CREATE TABLE {}(\n{}{}\n);".format(
-                self.name,
-                ',\n'.join([i.state for i in self.deffinition]),
-                ',\n\t{}'.format(',\n\t'.join([
-                    "FOREIGN KEY ({name}) REFERENCES {table}({name})".format(
-                        name=i.name,
-                        table=i.fk.__name__.upper()
-                    ) for i in fks
-                ])) if len(fks) > 0 else ''
-            )
+            self.name,
+            ',\n'.join([i.state for i in self.deffinition]),
+            ',\n\t{}'.format(',\n\t'.join([
+                "FOREIGN KEY ({name}) REFERENCES {table}({name})".format(
+                    name=i.name,
+                    table=i.fk.__name__.upper()
+                ) for i in fks
+            ])) if len(fks) > 0 else ''
+        )
 
     def create(self):
         """ Create the table without any safety protection.
@@ -162,6 +232,7 @@ class ITable(Logged, object):
 
 
 class TableRepresentation(object):
+
     """ TableRepresentation superclass, used to add representation to tables.
 
     """
@@ -186,6 +257,7 @@ class TableRepresentation(object):
 
 
 class TableAttribute(Logged):
+
     """ TableAttribute class, used to create and represent table attributes.
 
     """
@@ -215,7 +287,7 @@ class TableAttribute(Logged):
 
         """
         self._params = [
-            (k, v,) for (k, v,) in 
+            (k, v,) for (k, v,) in
             inspect.getargvalues(inspect.currentframe())[-1].items()
             if k.lower() != 'self'
         ]
@@ -233,7 +305,7 @@ class TableAttribute(Logged):
 
     def __repr__(self):
         """ Attribute representation.
-            
+
             :returns: Attribute's representation
             :rtype: ``str``
 
@@ -255,14 +327,16 @@ class TableAttribute(Logged):
 
         """
         retn = ''.join([
-                self.name,
-                ' {}'.format(self.typ.upper()),
-                (' NOT NULL' if not self.null else ''),
-                (' UNIQUE' if self.unique else ''),
-                (' DEFAULT {}'.format(str(self.default)) if self.default else ''),
-                (' PRIMARY KEY' if self.pk else '')
-            ])
-        retn = ('{} CHECK ({})'.format(retn, self.check) if self.check else retn)
+            self.name,
+            ' {}'.format(self.typ.upper()),
+            (' NOT NULL' if not self.null else ''),
+            (' UNIQUE' if self.unique else ''),
+            (' DEFAULT {}'.format(str(self.default))
+             if self.default else ''),
+            (' PRIMARY KEY' if self.pk else '')
+        ])
+        retn = ('{} CHECK ({})'.format(
+            retn, self.check) if self.check else retn)
         return '\t{}'.format(retn)
 
     def validattrs(self):
