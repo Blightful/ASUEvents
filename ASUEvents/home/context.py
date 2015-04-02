@@ -36,9 +36,9 @@ def context_styles(request):
     }
 
 def context_scripts(request):
+    core_scripts = [
+        os.path.join(settings.PLUGINS_URL, i) for i in settings.PLUGINS_CORE
+    ]
     return {
-        'scripts': [
-            os.path.join(settings.PLUGINS_URL, i).replace('\\', '/') \
-                    for i in settings.PLUGINS_CORE
-        ]
+        'scripts': core_scripts
     }
