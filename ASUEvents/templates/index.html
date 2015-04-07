@@ -2,6 +2,39 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
     {% block content %}
-    <h2>{{ message }}</h2>
+    {{ block.super }}
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        {{ stat|safe }}
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box red-sunglo calendar">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-calendar"></i>
+                        Calendar
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block scripts %}
+    {{ block.super }}
+    <script>
+    jQuery(document).ready(function() {
+        Metronic.init();
+        Layout.init();
+        QuickSidebar.init();
+        Index.init();
+        Calendar.init();
+    });
+    </script>
     {% endblock %}
 </html>

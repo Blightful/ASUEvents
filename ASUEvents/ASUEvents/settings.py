@@ -110,9 +110,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.tz',
-    'home.context.context_fonts',
-    'home.context.context_styles',
-    'home.context.context_scripts',
+    'home.context.context',
 )
 
 
@@ -137,4 +135,11 @@ STYLES_CORE = (
     'bootstrap/css/bootstrap.min.css',
     'uniform/css/uniform.default.css',
     'bootstrap-switch/css/bootstrap-switch.min.css',
+)
+
+FONT_CORE = (
+    (
+        'http://fonts.googleapis.com/css?family=Open+Sans'
+        ':400,300,600,700&subset=all'
+    ),
 )

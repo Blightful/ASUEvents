@@ -15,10 +15,11 @@
         <link href="{{ style }}" rel="stylesheet" type="text/css"/>
         {% endfor %}
         {% endblock %}
+        <link rel="shortcut icon" href="favicon.ico"/>
     </head>
     {% endblock %}
     {% block body %}
-    <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed-hide-logo page-container-bg-solid">
+    <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-container-bg-solid">
     {% block header %}
     <div class="page-header -i navbar navbar-fixed-top">
         <div class="page-header-inner">
@@ -26,12 +27,14 @@
                 <a href="index.html">
                     <img src="{% static 'images/logo.png' %}" alt="logo" class="logo-default" width="86" height="14"/>
                 </a>
+                {% block navbar %}
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
                         {% block navbaritems %}
                         {% endblock %}
                     </ul>
                 </div>
+                {% endblock %}
             </div>
         </div>
     </div>
@@ -39,13 +42,52 @@
     {% endblock %}
     {% block page %}
     <div class="page-container">
+        {% block sidebar %}
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler"></div>
+                    </li>
+                    {% block sidebarsearch %}
+                    <li class="sidebar-search-wrapper">
+                        {% block sidebarsearchform %}
+                        <form class="sidebar-search" action="index.html" method="POST">
+                            <a href="javascript:;" class="remove"><i class="icon-close"></i></a>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+                                </span>
+                            </div>
+                        </form>
+                        {% endblock %}
+                    </li>
+                    {% endblock %}
+                    {% block sidebaritems %}
+                    {% endblock %}
+                </ul>
+            </div>
+        </div>
+        {% endblock %}
         <div class="page-content-wrapper">
             <div class="page-content">
                 {% block content %}
+                    <h3 class="page-title">{{ title }} <small>{{ subtitle }}</small></h3>
                 {% endblock %}
             </div>
         </div>
     </div>
+    {% block footer %}
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2015 &copy; Ritashugisha
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+    {% endblock %}
     {% endblock %}
     </body>
     {% endblock %}

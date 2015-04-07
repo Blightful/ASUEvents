@@ -2,43 +2,38 @@ from django.conf import settings
 
 import os
 
-def context_fonts(request):
-    return {
-        'fonts': [
-            (
-                'http://fonts.googleapis.com/css?family=Open+Sans'
-                ':400,300,600,700&subset=all'
-            ),
-        ]
-    }
 
-
-def context_styles(request):
-    core_styles = [
-        os.path.join(settings.PLUGINS_URL, i) for i in settings.STYLES_CORE
-    ]
-    page_styles = [
-        os.path.join(settings.ASSETS_ADMIN, 'pages', 'css', 'tasks.css')
-    ]
-    core_styles.extend(page_styles)
-    theme_styles = [
+_fonts = list(settings.FONT_CORE) + []
+_styles = [i.replace('\\', '/') for i in 
+    [os.path.join(settings.PLUGINS_URL, i) for i in settings.STYLES_CORE] + [
         os.path.join(settings.ASSETS_GLOBAL, 'css', 'components.css'),
         os.path.join(settings.ASSETS_GLOBAL, 'css', 'plugins.css'),
         os.path.join(settings.ASSETS_ADMIN, 'layout', 'css', 'layout.css'),
         os.path.join(settings.ASSETS_ADMIN, 'layout', 'css', 'themes', 'darkblue.css'),
-        os.path.join(settings.ASSETS_ADMIN, 'layout', 'css', 'custom.css')
+        os.path.join(settings.ASSETS_ADMIN, 'layout', 'css', 'custom.css'),
+        os.path.join(settings.ASSETS_GLOBAL, 'plugins', 'fullcalendar', 'fullcalendar.min.css')
     ]
-    core_styles.extend(theme_styles)
-    return {
-        'styles': [
-            i.replace('\\', '/') for i in core_styles
-        ]
-    }
+]
+_scripts = [i.replace('\\', '/') for i in 
+    [os.path.join(settings.PLUGINS_URL, i) for i in settings.PLUGINS_CORE] + [
+        os.path.join(settings.ASSETS_GLOBAL, 'scripts', 'metronic.js'),
+        os.path.join(settings.ASSETS_ADMIN, 'layout', 'scripts', 'layout.js'),
+        os.path.join(settings.ASSETS_ADMIN, 'layout', 'scripts', 'quick-sidebar.js'),
+        os.path.join(settings.ASSETS_ADMIN, 'pages', 'scripts', 'index.js'),
+        os.path.join(settings.ASSETS_GLOBAL, 'plugins', 'fullcalendar', 'fullcalendar.min.js'),
+        os.path.join(settings.ASSETS_ADMIN, 'pages', 'scripts', 'calendar.js'),
+        os.path.join(settings.ASSETS_GLOBAL, 'plugins', 'moment.min.js')
+    ]
+]
+_context = {
+    'title': 'Dashboard',
+    'subtitle': 'current scheduled events',
+    'fonts': _fonts,
+    'styles': _styles,
+    'scripts': _scripts
+}
 
-def context_scripts(request):
-    core_scripts = [
-        os.path.join(settings.PLUGINS_URL, i) for i in settings.PLUGINS_CORE
-    ]
-    return {
-        'scripts': core_scripts
-    }
+
+def context(request):
+    return _context
+

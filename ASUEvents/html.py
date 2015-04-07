@@ -352,7 +352,7 @@ class HTML(object):
         a = ['%s="%s"' % i for i in self._attrs.items()]
         l = [self._name] + a
         s = '<%s>%s' % (' '.join(l), join)
-        if self._content:
+        if self._content or self._name.lower() == 'i':
             s += join.join(map(str_type, self._content))
             s += join + '</%s>' % self._name
         return s
