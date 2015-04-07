@@ -1,0 +1,16 @@
+Error Report and Commits for the duration of this project. 
+
+2015 - Building Database Project. 
+March 24th: 
+	Initial Commit
+	creation of the Framework for the database in Django
+	Fixed default invalid spacing. 
+
+March 26th:
+	Fixed Logging to $globals.LOGTOPATH
+	added insert function to ITable interface `Database.py`
+	added project UML .dia and .jpg
+
+April 2nd: 
+	Adding in django beginnings 
+	adding database documentation.
