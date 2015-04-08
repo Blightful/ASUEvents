@@ -100,8 +100,8 @@ var Calendar = function() {
                 header: h,
                 defaultView: 'month', // change default view with available options from http://arshaw.com/fullcalendar/docs/views/Available_Views/ 
                 slotMinutes: 15,
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar !!!
+                editable: false,
+                droppable: false, // this allows things to be dropped onto the calendar !!!
                 drop: function(date, allDay) { // this function is called when something is dropped
 
                     // retrieve the dropped element's stored Event Object

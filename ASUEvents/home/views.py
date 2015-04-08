@@ -6,7 +6,14 @@ import elements
 import os
 
 def index(request):
-    context = {'message': 'Hello, World!', 'stat': elements.DashboardStat('Events', '1349', color='red-intense', icon='calendar', link='javascript:;', link_text='View events')}
+    context = {
+        'stat': elements.DashboardStat(
+            'Events', '1349',
+            color='red-intense', icon='calendar',
+            link='javascript:;', link_text='View events'
+        ),
+        'calendar': elements.CalendarPortlet('Calendar', color='red-intense')
+    }
     return render(
         request,
         os.path.join(settings.TEMPLATE_PATH, 'index.html'),

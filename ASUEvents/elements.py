@@ -50,3 +50,28 @@ class DashboardStat:
 
     def __unicode__(self):
         return self.e._stringify(unicode)
+
+
+class CalendarPortlet:
+
+    def __init__(self, text, color='blue-hoki', icon='calendar'):
+        [
+            setattr(self, k, v) for (k, v,) in \
+                    inspect.getargvalues(inspect.currentframe())[-1].items() 
+                if k.lower() != 'self'
+        ]
+
+        self.e = HTML(escape=True).div(klass='portlet box {} calendar'.format(self.color))
+        e_title = self.e.div(klass='portlet-title')
+        e_title_caption = e_title.div(klass='caption')
+        e_title_caption.i(klass='fa fa-{}'.format(self.icon))
+        e_title_caption.text(self.text, escape=False)
+        e_body = self.e.div(klass='portlet-body')
+        e_calendar = e_body.div(id='calendar')
+
+    def __str__(self):
+        return self.e._stringify(str)
+
+    def __unicode__(self):
+        return self.e._stringify(unicode)
+
