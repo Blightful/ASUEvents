@@ -110,12 +110,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.tz',
-    'home.context.context',
+    'ASUEvents.context_processors.core',
 )
 
 
-PLUGINS_URL = os.path.join(ASSETS_URL, 'global', 'plugins/')
-PLUGINS_PATH = os.path.join(ASSETS_PATH, 'global', 'plugins')
+PLUGINS_URL = os.path.join(ASSETS_GLOBAL, 'plugins/')
+PLUGINS_PATH = os.path.join(ASSETS_GLOBAL, 'plugins')
 PLUGINS_CORE = (
     'jquery.min.js',
     'jquery-migrate.min.js',
@@ -128,7 +128,20 @@ PLUGINS_CORE = (
     'uniform/jquery.uniform.min.js',
     'bootstrap-switch/js/bootstrap-switch.min.js',
 )
+PLUGINS_PAGE_GLOBAL = (
+    'metronic.js',
+)
+PLUGINS_PAGE_ADMIN = (
+    'layout.js',
+    'quick-sidebar.js',
+)
 
+PLUGINS_CORE = [os.path.join(PLUGINS_URL, i) for i in PLUGINS_CORE]
+PLUGINS_PAGE_GLOBAL = [os.path.join(ASSETS_GLOBAL, 'scripts', i) for i in PLUGINS_PAGE_GLOBAL]
+PLUGINS_PAGE_ADMIN = [os.path.join(ASSETS_ADMIN, 'layout', 'scripts', i) for i in PLUGINS_PAGE_ADMIN]
+PLUGINS_DEFAULT = PLUGINS_CORE + PLUGINS_PAGE_GLOBAL + PLUGINS_PAGE_ADMIN
+
+STYLES_PAGE_THEME = 'darkblue.css'
 STYLES_CORE = (
     'font-awesome/css/font-awesome.min.css',
     'simple-line-icons/simple-line-icons.min.css',
@@ -136,10 +149,25 @@ STYLES_CORE = (
     'uniform/css/uniform.default.css',
     'bootstrap-switch/css/bootstrap-switch.min.css',
 )
+STYLES_PAGE_GLOBAL = (
+    'components.css',
+    'plugins.css',
+)
+STYLES_PAGE_ADMIN = (
+    'layout.css',
+    'themes/{}'.format(STYLES_PAGE_THEME),
+    'custom.css',
+)
 
-FONT_CORE = (
+STYLES_CORE = [os.path.join(PLUGINS_URL, i) for i in STYLES_CORE]
+STYLES_PAGE_GLOBAL = [os.path.join(ASSETS_GLOBAL, 'css', i) for i in STYLES_PAGE_GLOBAL]
+STYLES_PAGE_ADMIN = [os.path.join(ASSETS_ADMIN, 'layout', 'css', i) for i in STYLES_PAGE_ADMIN]
+STYLES_DEFAULT = STYLES_CORE + STYLES_PAGE_GLOBAL + STYLES_PAGE_ADMIN
+
+FONTS_CORE = (
     (
         'http://fonts.googleapis.com/css?family=Open+Sans'
         ':400,300,600,700&subset=all'
     ),
 )
+FONTS_DEFAULT = FONTS_CORE

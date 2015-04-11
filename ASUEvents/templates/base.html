@@ -5,17 +5,21 @@
     <head>
         <meta charset="utf-8">
         {% block title %}
-        <title>ASUEvents</title>
+            <title>ASUEvents</title>
         {% endblock %}
         {% block fonts %}
-        {% for font in fonts %}
-        <link href="{{ font }}" rel="stylesheet" type="text/css"/>
-        {% endfor %}
-        {% for style in styles %}
-        <link href="{{ style }}" rel="stylesheet" type="text/css"/>
-        {% endfor %}
+            {% for font in fonts %}
+            <link href="{{ font }}" rel="stylesheet" type="text/css"/>
+            {% endfor %}
         {% endblock %}
-        <link rel="shortcut icon" href="favicon.ico"/>
+        {% block styles %}
+            {% for style in styles %}
+            <link href="{{ style }}" rel="stylesheet" type="text/css"/>
+            {% endfor %}
+        {% endblock %}
+        {% block favicon %}
+            <link rel="shortcut icon" href="favicon.ico"/>
+        {% endblock %}
     </head>
     {% endblock %}
     {% block body %}
@@ -92,8 +96,8 @@
     </body>
     {% endblock %}
     {% block scripts %}
-    {% for script in scripts %}
-    <script src="{{ script }}" type="text/javascript"></script>
-    {% endfor %}
+        {% for script in scripts %}
+        <script src="{{ script }}" type="text/javascript"></script>
+        {% endfor %}
     {% endblock %}
 </html>
