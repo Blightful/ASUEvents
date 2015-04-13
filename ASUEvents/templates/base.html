@@ -23,7 +23,7 @@
     </head>
     {% endblock %}
     {% block body %}
-    <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-container-bg-solid">
+    <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-container-bg-solid page-sidebar-closed-hide-logo">
     {% block header %}
     <div class="page-header -i navbar navbar-fixed-top">
         <div class="page-header-inner">
@@ -40,6 +40,18 @@
                 </div>
                 {% endblock %}
             </div>
+            {% block searchfrom %}
+                <form class="search-form" method="GET" action="#">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="query" placeholder="Search..."></input>
+                        <span class="input-group-btn">
+                            <a class="btn submit" href="javascript:;">
+                                <i class="icon-magnifier"></i>
+                            </a>
+                        </span>
+                    </div>
+                </form>
+            {% endblock %}
         </div>
     </div>
     <div class="clearfix"></div>
@@ -53,21 +65,6 @@
                     <li class="sidebar-toggler-wrapper">
                         <div class="sidebar-toggler"></div>
                     </li>
-                    {% block sidebarsearch %}
-                    <li class="sidebar-search-wrapper">
-                        {% block sidebarsearchform %}
-                        <form class="sidebar-search" action="index.html" method="POST">
-                            <a href="javascript:;" class="remove"><i class="icon-close"></i></a>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
-                                </span>
-                            </div>
-                        </form>
-                        {% endblock %}
-                    </li>
-                    {% endblock %}
                     {% block sidebaritems %}
                     {% endblock %}
                 </ul>
