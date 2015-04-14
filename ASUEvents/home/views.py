@@ -12,10 +12,7 @@ class IndexView(TemplateView):
 
     def __init__(self):
         self.template_name = os.path.join(settings.TEMPLATE_PATH, 'index.html')
-
-    @property
-    def context(self):
-        return {
+        self.context = {
             'title': 'Dashboard',
             'subtitle': 'current scheduled events',
             'addfonts': [

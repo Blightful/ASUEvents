@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    {% block fonts %}
+    {{ block.super }}
+        {% for font in addfonts %}
+        <link href="{{ font }}" rel="stylesheet" type="text/css"/>
+        {% endfor %}
+    {% endblock %}
+    {% block styles %}
+    {{ block.super }}
+        {% for style in addstyles %}
+        <link href="{{ style }}" rel="stylesheet" type="text/css"/>
+        {% endfor %}
+    {% endblock %}
+    {% block content %}
+    {{ block.super }}
+        {% if registered %}
+            <div class="note note-success">
+                <h4 class="block">Success!</h4>
+                <p>You have been registered as a manager for ASUEvents. Take the time to setup your default permissions as required.</p>
+            </div>
+        {% else %}
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green">
+                        <span class="caption-subject bold uppercase">Manager Registration</span>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form-body">
+                        <form id="mform" method="post" action="/manager/register/" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for field in mform %}
+                                {% if field.errors %}
+                                    <div class="form-group form-md-line-input has-error">
+                                    <div class="input-icon">
+                                {% else %}
+                                    <div class="form-group form-md-line-input">
+                                {% endif %}
+                                    {{ field }}
+                                    <label for="form_control_1">{{ field.label }}</label>
+                                    {% if field.errors %}
+                                        <span class="help-block">{{ field.errors|striptags }}</span>
+                                        <i class="fa fa-exclamation"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <button class="btn blue" type="submit" name="submit" value="register">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+    {% block scripts %}
+    {{ block.super }}
+        {% for script in addscripts %}
+        <script src="{{ script }}" type="text/javascript"></script>
+        {% endfor %}
+    <script>
+    jQuery(document).ready(function() {
+        Metronic.init();
+        Layout.init();
+    });
+    </script>
+    {% endblock %}
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    {% block fonts %}
+    {{ block.super }}
+        {% for font in addfonts %}
+        <link href="{{ font }}" rel="stylesheet" type="text/css"/>
+        {% endfor %}
+    {% endblock %}
+    {% block styles %}
+    {{ block.super }}
+        {% for style in addstyles %}
+        <link href="{{ style }}" rel="stylesheet" type="text/css"/>
+        {% endfor %}
+    {% endblock %}
+    {% block content %}
+    {{ block.super }}
+    {% endblock %}
+    {% block scripts %}
+    {{ block.super }}
+        {% for script in addscripts %}
+        <script src="{{ script }}" type="text/javascript"></script>
+        {% endfor %}
+    <script>
+    jQuery(document).ready(function() {
+        Metronic.init();
+        Layout.init();
+    });
+    </script>
+    {% endblock %}
+</html>
